@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@color/greenWhatsapp"
+  android:padding="40dp"
+  tools:context=".MainActivity">
+
+  <ImageView
+    android:id="@+id/imageViewId"
+    android:layout_width="200dp"
+    android:layout_height="200dp"
+    android:layout_margin="40dp"
+
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:srcCompat="@drawable/chat_icon" />
+
+  <TextView
+    android:id="@+id/titleId"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="40dp"
+
+    android:text="@string/welcome_to_whatsapp_clone"
+    android:textSize="28sp"
+    android:textAlignment="center"
+    android:textAllCaps="true"
+    android:textStyle="bold|italic"
+
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/imageViewId"/>
+
+  <Button
+    android:id="@+id/logInButton"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="40dp"
+    android:padding="15dp"
+    android:text="@string/create_an_account"
+    android:textSize="18sp"
+
+    app:layout_constraintTop_toBottomOf="@id/titleId"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:backgroundTint="@color/teal_700"
+
+    />
+  <Button
+    android:id="@+id/createAccountButton"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="15dp"
+    android:padding="15dp"
+    android:text="@string/create_an_account"
+    android:textSize="18sp"
+
+    app:layout_constraintTop_toBottomOf="@id/logInButton"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:backgroundTint="@color/teal_700"
+
+    />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,5 @@
+<resources>
+  <string name="app_name">MyChatApp</string>
+    <string name="welcome_to_whatsapp_clone">Welcome to WhatsApp clone</string>
+  <string name="create_an_account">Create An account</string>
+</resources>

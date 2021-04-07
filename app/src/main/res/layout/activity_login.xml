@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/greenWhatsapp"
+    tools:context=".LoginActivity">
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewId"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:backgroundTint="@color/colorAccent"
+        android:layout_centerInParent="true"
+
+        app:cardCornerRadius="13dp"
+        app:cardElevation="3dp"
+        app:cardUseCompatPadding="true">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/colorAccent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="Login"
+                android:textColor="#fff"
+                android:textStyle="bold"
+
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="50dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="30dp"
+                android:layout_marginTop="10dp">
+
+                <EditText
+                    android:id="@+id/loginEmailId"
+                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/selector_bg_edit_2"
+                    android:hint="Enter Email"
+                    android:inputType="textEmailAddress"
+                    android:padding="2dp"
+                    android:textSize="16sp"
+                    android:textCursorDrawable="@drawable/bg_input_cursor_2"
+                    />
+
+                <EditText
+                    android:id="@+id/loginPasswordId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+
+                    android:background="@drawable/selector_bg_edit_2"
+                    android:inputType="textPassword"
+                    android:hint="Enter Password"
+                    android:textSize="16sp"
+                    android:textColor="#f0f7f4"
+                    android:textCursorDrawable="@drawable/bg_input_cursor_2"
+
+                    />
+
+                <Button
+                    android:id="@+id/loginButtonId"
+                    android:layout_width="150dp"
+                    android:layout_height="50dp"
+                    android:layout_marginHorizontal="40dp"
+                    android:layout_marginTop="30dp"
+
+                    android:background="@drawable/bt_shape"
+                    android:stateListAnimator="@drawable/state_list_animator_z"
+                    android:text="Login"
+                    android:textColor="#d3d3d3"
+                    app:icon="@drawable/bt_shape" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+
+    </androidx.cardview.widget.CardView>
+
+
+</RelativeLayout>
