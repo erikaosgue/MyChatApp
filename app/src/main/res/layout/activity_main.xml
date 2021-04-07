@@ -41,7 +41,7 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="40dp"
     android:padding="15dp"
-    android:text="@string/create_an_account"
+    android:text="@string/logInAccount"
     android:textSize="18sp"
 
     app:layout_constraintTop_toBottomOf="@id/titleId"

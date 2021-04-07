@@ -1,5 +1,6 @@
 package com.erikaosgue.mychatapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.erikaosgue.mychatapp.databinding.ActivityMainBinding
@@ -13,5 +14,8 @@ class MainActivity : AppCompatActivity() {
  		setContentView(activityMainBinding.root)
 
 
+		activityMainBinding.createAccountButton.setOnClickListener {
+			startActivity(Intent(this, CreateAccountActivity::class.java))
+		}
   }
 }
