@@ -1,4 +1,4 @@
-package com.erikaosgue.mychatapp
+package com.erikaosgue.mychatapp.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -72,6 +72,11 @@ class CreateAccountActivity : AppCompatActivity() {
 
                             if (task.isSuccessful) {
                                 Toast.makeText(this, "Successful User created!", Toast.LENGTH_LONG).show()
+                                val intent = DashboardActivity.getNewIntent(this).apply {
+                                    putExtra("name", displayName)
+                                }
+                                startActivity(intent)
+                                finish()
                             }
                             else {
                                 Toast.makeText(this, "Fail User not created! ${task.exception}", Toast.LENGTH_LONG).show()
