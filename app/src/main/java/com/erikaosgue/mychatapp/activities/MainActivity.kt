@@ -1,4 +1,4 @@
-package com.erikaosgue.mychatapp
+package com.erikaosgue.mychatapp.activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
