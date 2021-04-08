@@ -60,6 +60,7 @@ class DashboardActivity : AppCompatActivity() {
                 //Take user to settingsActivity
             startActivity(Intent(this, SettingsActivity::class.java))
         }
+        return true
 
     }
 
