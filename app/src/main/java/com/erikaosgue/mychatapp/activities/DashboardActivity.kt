@@ -1,11 +1,10 @@
-package com.erikaosgue.mychatapp
+package com.erikaosgue.mychatapp.activities
 
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import com.erikaosgue.mychatapp.databinding.ActivityCreateAccountBinding
 import com.erikaosgue.mychatapp.databinding.ActivityDashboardBinding
 
 class DashboardActivity : AppCompatActivity() {
