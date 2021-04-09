@@ -4,6 +4,84 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/darkBg"
     tools:context=".activities.SettingsActivity">
+
+
+  <de.hdodenhof.circleimageview.CircleImageView
+    android:id="@+id/settingsProfileId"
+    android:layout_height="150dp"
+    android:layout_width="150dp"
+    android:layout_marginTop="28dp"
+    android:src="@drawable/profile_img"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent">
+  </de.hdodenhof.circleimageview.CircleImageView>
+
+  <TextView
+    android:id="@+id/settingsDisplayNameId"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="20dp"
+    android:text="Display name"
+    android:textSize="18sp"
+    android:textStyle="bold"
+    android:textAlignment="center"
+    android:textColor="@color/white"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/settingsProfileId"
+    />
+  <TextView
+    android:id="@+id/settingsStatusId"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="20dp"
+    android:text="Hey I am Happy"
+
+    android:textSize="18sp"
+    android:textStyle="italic"
+    android:textAlignment="center"
+    android:textColor="@color/white"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/settingsDisplayNameId"
+    />
+
+<!--  // Here the background doensn't work for my buttons-->
+  <Button
+    android:id="@+id/settingsChangeImgBtn"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="50dp"
+    android:text="change Picture"
+    android:paddingHorizontal="20dp"
+
+    android:stateListAnimator="@drawable/state_list_animator_z"
+    android:background="@drawable/bt_shape"
+
+
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/settingsStatusId"
+    />
+  <Button
+    android:id="@+id/settingsChangeStatusBtn"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="30dp"
+    android:text="change Status"
+    android:paddingHorizontal="20dp"
+
+
+    android:stateListAnimator="@drawable/state_list_animator_z"
+    android:background="@drawable/bt_shape"
+
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/settingsChangeImgBtn"
+    />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

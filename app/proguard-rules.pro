@@ -19,3 +19,8 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# this is for cropping the images
+# https://github.com/ArthurHub/Android-Image-Cropper
+#-keep class androidx.appcompat.widget.** { *; }
+#-keep class android.support.v7.widget.** { *; }
