@@ -179,22 +179,22 @@ class SettingsActivity : AppCompatActivity() {
         val userId = mCurrentUser?.uid
         val imageFilePath = mStorageRef.child("profile_images").child("$userId.jpg")
 
-//        imageFilePath.putFile(imageUri).addOnCompleteListener { task ->
-//
-//            if (!task.isSuccessful){
-//                task.exception?.let {
-//                    throw it
-//                }
-//            }
-//                imageFilePath.downloadUrl
-//            }.addOnCompleteListener {task ->
-//            if (task.isSuccessful) {
-//                val downloadUri = task.result
-//                Log.d("Here understanding =>", "$downloadUri")
-//            }else {
-//                // do something
-//            }
-//        }
+        imageFilePath.putFile(imageUri).addOnCompleteListener { task ->
+
+            if (!task.isSuccessful){
+                task.exception?.let {
+                    throw it
+                }
+            }
+                imageFilePath.downloadUrl
+            }.addOnCompleteListener {task ->
+            if (task.isSuccessful) {
+                val downloadUri = task.result
+                Log.d("Here understanding =>", "$downloadUri")
+            }else {
+                // do something
+            }
+        }
 
 
         imageFilePath.putFile(imageUri).addOnCompleteListener { task ->
