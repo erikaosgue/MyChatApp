@@ -3,17 +3,22 @@ package com.erikaosgue.mychatapp.activities
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.media.Image
+import android.graphics.Bitmap
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import com.erikaosgue.mychatapp.databinding.ActivitySettingsBinding
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
-import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.UploadTask
 import com.theartofdev.edmodo.cropper.CropImage
 import id.zelory.compressor.Compressor
+import id.zelory.compressor.constraint.default
+import id.zelory.compressor.constraint.format
+import id.zelory.compressor.constraint.quality
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
@@ -23,10 +28,11 @@ import java.io.File
 class SettingsActivity : AppCompatActivity() {
 
 
-    var mDatabase : DatabaseReference?= null
-    var mCurrentUser: FirebaseUser? = null
-    var mStorageRef: StorageReference? = null
+    var mDatabase = FirebaseDatabase.getInstance().reference
+    var mCurrentUser = FirebaseAuth.getInstance().currentUser
+    var mStorageRef = FirebaseStorage.getInstance().reference
     var GALLERY_ID: Int = 1
+    lateinit var mContext : Context
 
 
     lateinit var actSettingsBinding: ActivitySettingsBinding
@@ -35,24 +41,26 @@ class SettingsActivity : AppCompatActivity() {
         actSettingsBinding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(actSettingsBinding.root)
 
-        mCurrentUser = FirebaseAuth.getInstance().currentUser
-        mDatabase = FirebaseDatabase.getInstance().reference
+
+        mContext = this
 
         val userId = mCurrentUser?.uid
-        updateUserData(userId.toString())
+        getUserData(userId.toString())
         setupUI()
 
 
     }
 
-    private fun updateUserData(userId: String) {
+    // Update the data that comes from the database into the
+    // view
+    private fun getUserData(userId: String) {
 
         mDatabase = FirebaseDatabase.getInstance().reference
             .child("Users")
             .child(userId)
 
 
-        mDatabase?.addValueEventListener(object: ValueEventListener {
+        mDatabase.addValueEventListener(object: ValueEventListener {
 
             // snapshot is all the content from the user
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -75,6 +83,9 @@ class SettingsActivity : AppCompatActivity() {
         })
     }
 
+
+    //Register the settingsChangeStatus and the settingsChangeImage
+    //buttons to listen onclick
     private fun setupUI() {
 
         actSettingsBinding.settingsChangeStatusBtn.setOnClickListener {
@@ -96,62 +107,161 @@ class SettingsActivity : AppCompatActivity() {
 
     }
 
+
+    // Get the information as result from the Gallery, the
+    // Idea is to create our picture file fro the data
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-
-        if (requestCode == GALLERY_ID && resultCode == Activity.RESULT_OK) {
-            // get the image from the data intent
-            val image: Uri? = data?.data
-
-
-            //Comes from the cropImage library
-            //Info: https://github.com/ArthurHub/Android-Image-Cropper
-
-            //Will start an activity that allow us to crop the image
-            CropImage.activity(image)
-                .setAspectRatio(1,1)
-                .start(this)
-        }
-
-        if (requestCode === CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            val result = CropImage.getActivityResult(data)
-
-            if (resultCode === Activity.RESULT_OK) {
-                val resultUri = result.uri
-
-                var userId = mCurrentUser?.uid
-                val thumbFile = File(resultUri.path)
-
-
-                compressImage(thumbFile, this)
-
-
-
-            }
-        }
         super.onActivityResult(requestCode, resultCode, data)
 
-
-    }
-
-    private fun compressImage(thumbFile: File, context: Context){
-        GlobalScope.launch {
-
-            //compress the Image
-            val thumbBitmap = Compressor.compress(context, thumbFile)
-
-            //upload the image and the thumbnail to firebase Storage
-            //Download the ulr of the image and the thumbnail
-            // create a new object to save the imageURL and the thumbnailURL into
-            // the database
-            //Questions?
-            //1. Why should we save 2 images, into storage? thumbnail and image
-            //2. Why is he compressing twice the image?
-            //3. Why is he saving the image in one side and the thumbnail in another folder?
-
-//            var byteArray = ByteArrayOutputStream()
-//            thumbBitmap.compress( )
-            println("here 1 $thumbBitmap")
+        if (requestCode == GALLERY_ID && resultCode == Activity.RESULT_OK) {
+            //Crop Image
+            cropImage(data?.data)
         }
-        println("here 2")
+
+        // Checking the result from the cropImage Activity
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE  && resultCode == Activity.RESULT_OK) {
+            val imageUri = CropImage.getActivityResult(data).uri
+            compressImage(imageUri)
+        }
+        else if (resultCode === CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+            val error = CropImage.getActivityResult(data).error
+            Log.d("Error", error.toString())
+        }
+        else {
+            Toast.makeText(this, "FAIL from cropImage!", Toast.LENGTH_LONG).show()
+        }
     }
+
+
+
+    // Crop the image that comes from the gallery
+    private fun cropImage(image: Uri?) {
+
+        /*Crop the Image from the library Image-Cropper:
+        https://github.com/ArthurHub/Android-Image-Cropper
+
+        It will start an activity that allow us to crop the image*/
+        CropImage.activity(image)
+            .setAspectRatio(1,1)
+            .start(this)
+    }
+
+    private fun compressImage(imageUri: Uri) {
+
+        val thumbFile = File(imageUri.path.toString())
+
+        GlobalScope.launch {
+            //compress the Image
+            val thumbnail = Compressor.compress(mContext, thumbFile) {
+                quality(100)
+                format(Bitmap.CompressFormat.JPEG)
+                default(width = 200, height = 200)
+            }
+
+            storeImage(imageUri, Uri.fromFile(thumbnail))
+        }
+    }
+
+    private fun storeImage(imageUri: Uri, thumbFile: Uri) {
+
+        val userId = mCurrentUser!!.uid
+        val updateObj = HashMap<String, Any>()
+
+        GlobalScope.launch {
+            storeRefImage(imageUri, updateObj)
+            storeRefThumbnail(thumbFile, updateObj)
+            updateDatabase(updateObj)
+        }
+
+    }
+    fun storeRefImage(imageUri: Uri, updateObj: HashMap<String, Any>){
+
+        val userId = mCurrentUser?.uid
+        val imageFilePath = mStorageRef.child("profile_images").child("$userId.jpg")
+
+//        imageFilePath.putFile(imageUri).addOnCompleteListener { task ->
+//
+//            if (!task.isSuccessful){
+//                task.exception?.let {
+//                    throw it
+//                }
+//            }
+//                imageFilePath.downloadUrl
+//            }.addOnCompleteListener {task ->
+//            if (task.isSuccessful) {
+//                val downloadUri = task.result
+//                Log.d("Here understanding =>", "$downloadUri")
+//            }else {
+//                // do something
+//            }
+//        }
+
+
+        imageFilePath.putFile(imageUri).addOnCompleteListener { task ->
+            // Pass the url where the image was store
+            imageFilePath.downloadUrl.addOnSuccessListener { task ->
+                Log.d("Here understanding =>", "2")
+
+                val imageUrl = task.toString()
+                updateObj["image"] = imageUrl
+                Log.d("Here understanding =>", "$imageUrl")
+
+
+            }.addOnFailureListener {
+                showMessage("FAIL thumb and Image NOT Saved!")
+
+            }
+        }.addOnFailureListener {
+            showMessage("FAIL Profile Image NOT Saved!")
+
+        }
+    }
+
+    private fun storeRefThumbnail(thumbFile: Uri, updateObj: HashMap<String, Any> ) {
+
+        val userId = mCurrentUser?.uid
+        val thumbFilePath = mStorageRef.child("profile_images").child("thumbs").child("$userId.jpg")
+        thumbFilePath.putFile(thumbFile).addOnSuccessListener {
+            Log.d("Here understanding =>", "3")
+
+            thumbFilePath.downloadUrl.addOnSuccessListener { task ->
+                Log.d("Here understanding =>", "4")
+
+                val thumbUrl = task.toString()
+
+                updateObj["thumb_image"] = thumbUrl
+
+
+            }.addOnFailureListener {
+                showMessage("FAIL Profile Image NOT Saved!")
+
+            }
+        }.addOnFailureListener {
+            showMessage("FAIL thumb and Image NOT Saved!")
+        }
+    }
+    private fun updateDatabase(updateObj: HashMap<String, Any>) {
+        Log.d("Here understanding =>", "5")
+        //Add the url (from Storage) into the realtimeDatabase
+        // Base on the current user
+        mDatabase.updateChildren(updateObj).addOnSuccessListener {
+            Log.d("Here understanding =>", "6")
+            showMessage("Profile Image Saved!")
+
+        }.addOnFailureListener {
+            showMessage("Fail to Save Image in the Database")
+        }
+
+    }
+
+    private fun showMessage(message: String)  {
+        Toast.makeText(
+            this, message,
+            Toast.LENGTH_LONG)
+            .show()
+
+        Log.d("Here =>", message)
+
+    }
+
 }
