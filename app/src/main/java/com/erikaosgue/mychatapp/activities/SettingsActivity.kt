@@ -197,24 +197,24 @@ class SettingsActivity : AppCompatActivity() {
         }
 
 
-        imageFilePath.putFile(imageUri).addOnCompleteListener { task ->
-            // Pass the url where the image was store
-            imageFilePath.downloadUrl.addOnSuccessListener { task ->
-                Log.d("Here understanding =>", "2")
-
-                val imageUrl = task.toString()
-                updateObj["image"] = imageUrl
-                Log.d("Here understanding =>", "$imageUrl")
-
-
-            }.addOnFailureListener {
-                showMessage("FAIL thumb and Image NOT Saved!")
-
-            }
-        }.addOnFailureListener {
-            showMessage("FAIL Profile Image NOT Saved!")
-
-        }
+//        imageFilePath.putFile(imageUri).addOnCompleteListener { task ->
+//            // Pass the url where the image was store
+//            imageFilePath.downloadUrl.addOnSuccessListener { task ->
+//                Log.d("Here understanding =>", "2")
+//
+//                val imageUrl = task.toString()
+//                updateObj["image"] = imageUrl
+//                Log.d("Here understanding =>", "$imageUrl")
+//
+//
+//            }.addOnFailureListener {
+//                showMessage("FAIL thumb and Image NOT Saved!")
+//
+//            }
+//        }.addOnFailureListener {
+//            showMessage("FAIL Profile Image NOT Saved!")
+//
+//        }
     }
 
     private fun storeRefThumbnail(thumbFile: Uri, updateObj: HashMap<String, Any> ) {
