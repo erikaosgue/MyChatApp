@@ -35,11 +35,11 @@ class DashboardActivity : AppCompatActivity() {
         actDashboardBinding.mainTabs.setTabTextColors(Color.GRAY, Color.WHITE)
 
 
-        val extras = intent.extras
-        if (extras != null) {
-            val userName = extras.get("name")
-            Toast.makeText(this, "Username: $userName", Toast.LENGTH_LONG).show()
-        }
+//        val extras = intent.extras
+//        if (extras != null) {
+//            val userName = extras.get("name")
+//            Toast.makeText(this, "Username: $userName", Toast.LENGTH_LONG).show()
+//        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
