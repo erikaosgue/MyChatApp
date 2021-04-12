@@ -9,11 +9,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import com.erikaosgue.mychatapp.R
 import com.erikaosgue.mychatapp.databinding.ActivitySettingsBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageTask
 import com.google.firebase.storage.UploadTask
+import com.squareup.picasso.Picasso
 import com.theartofdev.edmodo.cropper.CropImage
 import id.zelory.compressor.Compressor
 import id.zelory.compressor.constraint.default
@@ -51,8 +54,12 @@ class SettingsActivity : AppCompatActivity() {
 
     }
 
-    // Update the data that comes from the database into the
-    // view
+
+     /**
+      * Updates the data that comes from the database into the view UI
+      * @param userId id of the current user log In
+      * @return true if purchase is consumed, false otherwise
+     **/
     private fun getUserData(userId: String) {
 
         mDatabase = FirebaseDatabase.getInstance().reference
@@ -66,7 +73,7 @@ class SettingsActivity : AppCompatActivity() {
             override fun onDataChange(snapshot: DataSnapshot) {
 
                 val displayName = snapshot.child("display_name").value
-                val image = snapshot.child("image").value
+                val image = snapshot.child("image").value.toString()
                 val userStatus = snapshot.child("status").value
                 val thumb = snapshot.child("thumb_image").value
 
@@ -75,6 +82,12 @@ class SettingsActivity : AppCompatActivity() {
                 actSettingsBinding.settingsStatusId.text = userStatus.toString()
                 actSettingsBinding.settingsDisplayNameId.text = displayName.toString()
 
+                if (image != "default") {
+                    Picasso.get()
+                        .load(image)
+                        .placeholder(R.drawable.profile_img)
+                        .into(actSettingsBinding.settingsProfileId)
+                }
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -164,57 +177,40 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun storeImage(imageUri: Uri, thumbFile: Uri) {
 
-        val userId = mCurrentUser!!.uid
         val updateObj = HashMap<String, Any>()
 
-        GlobalScope.launch {
-            storeRefImage(imageUri, updateObj)
-            storeRefThumbnail(thumbFile, updateObj)
-            updateDatabase(updateObj)
-        }
+        storeRefImage(imageUri, thumbFile)
 
     }
-    fun storeRefImage(imageUri: Uri, updateObj: HashMap<String, Any>){
+    private fun storeRefImage(imageUri: Uri, thumbFile: Uri) {
 
         val userId = mCurrentUser?.uid
         val imageFilePath = mStorageRef.child("profile_images").child("$userId.jpg")
 
-        imageFilePath.putFile(imageUri).addOnCompleteListener { task ->
 
-            if (!task.isSuccessful){
-                task.exception?.let {
-                    throw it
-                }
+        imageFilePath.putFile(imageUri).addOnSuccessListener { task ->
+            // Pass the url where the image was store
+            imageFilePath.downloadUrl.addOnSuccessListener { task ->
+
+                val updateObj = HashMap<String, Any>()
+
+                val imageUrl = task.toString()
+
+                updateObj["image"] = imageUrl
+                Log.d("image url =>", "$imageUrl")
+
+                storeRefThumbnail(thumbFile, updateObj)
+                //https://firebasestorage.googleapis.com/v0/b/mychatapp-d2b1c.appspot.com/o
+
+
+            }.addOnFailureListener {
+                showMessage("FAIL thumb and Image NOT Saved!")
+
             }
-                imageFilePath.downloadUrl
-            }.addOnCompleteListener {task ->
-            if (task.isSuccessful) {
-                val downloadUri = task.result
-                Log.d("Here understanding =>", "$downloadUri")
-            }else {
-                // do something
-            }
+        }.addOnFailureListener {
+            showMessage("FAIL Profile Image NOT Saved!")
+
         }
-
-
-//        imageFilePath.putFile(imageUri).addOnCompleteListener { task ->
-//            // Pass the url where the image was store
-//            imageFilePath.downloadUrl.addOnSuccessListener { task ->
-//                Log.d("Here understanding =>", "2")
-//
-//                val imageUrl = task.toString()
-//                updateObj["image"] = imageUrl
-//                Log.d("Here understanding =>", "$imageUrl")
-//
-//
-//            }.addOnFailureListener {
-//                showMessage("FAIL thumb and Image NOT Saved!")
-//
-//            }
-//        }.addOnFailureListener {
-//            showMessage("FAIL Profile Image NOT Saved!")
-//
-//        }
     }
 
     private fun storeRefThumbnail(thumbFile: Uri, updateObj: HashMap<String, Any> ) {
@@ -230,6 +226,7 @@ class SettingsActivity : AppCompatActivity() {
                 val thumbUrl = task.toString()
 
                 updateObj["thumb_image"] = thumbUrl
+                updateDatabase(updateObj)
 
 
             }.addOnFailureListener {
@@ -242,6 +239,7 @@ class SettingsActivity : AppCompatActivity() {
     }
     private fun updateDatabase(updateObj: HashMap<String, Any>) {
         Log.d("Here understanding =>", "5")
+
         //Add the url (from Storage) into the realtimeDatabase
         // Base on the current user
         mDatabase.updateChildren(updateObj).addOnSuccessListener {

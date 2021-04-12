@@ -73,6 +73,10 @@ dependencies {
   implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3'
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
 
+  //Picasso Library
+  implementation 'com.squareup.picasso:picasso:2.71828'
 
+  // FirebaseUI library
+  implementation 'com.firebaseui:firebase-ui-database:7.1.1'
 
 }
