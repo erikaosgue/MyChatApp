@@ -14,8 +14,6 @@ import com.erikaosgue.mychatapp.databinding.ActivitySettingsBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageTask
-import com.google.firebase.storage.UploadTask
 import com.squareup.picasso.Picasso
 import com.theartofdev.edmodo.cropper.CropImage
 import id.zelory.compressor.Compressor
@@ -24,7 +22,6 @@ import id.zelory.compressor.constraint.format
 import id.zelory.compressor.constraint.quality
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.io.ByteArrayOutputStream
 import java.io.File
 
 
@@ -178,7 +175,6 @@ class SettingsActivity : AppCompatActivity() {
     private fun storeImage(imageUri: Uri, thumbFile: Uri) {
 
         val updateObj = HashMap<String, Any>()
-
         storeRefImage(imageUri, thumbFile)
 
     }
@@ -193,7 +189,6 @@ class SettingsActivity : AppCompatActivity() {
             imageFilePath.downloadUrl.addOnSuccessListener { task ->
 
                 val updateObj = HashMap<String, Any>()
-
                 val imageUrl = task.toString()
 
                 updateObj["image"] = imageUrl

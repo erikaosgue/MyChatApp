@@ -10,7 +10,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.erikaosgue.mychatapp.R
-import com.erikaosgue.mychatapp.adapters.firebaseRecyclerAdapter
+import com.erikaosgue.mychatapp.adapters.UsersAdapter
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
@@ -24,6 +24,7 @@ class UsersFragment : Fragment() {
 
     var mUserDatabase: DatabaseReference ?= null
 
+    var adapter: UsersAdapter?= null
 
 
     override fun onCreateView(
@@ -49,19 +50,21 @@ class UsersFragment : Fragment() {
         userRecyclerView.setHasFixedSize(true)
 
         userRecyclerView.layoutManager = linearLayoutManager
-        userRecyclerView.adapter = firebaseRecyclerAdapter
+//        userRecyclerView.adapter = firebaseRecyclerAdapter
+        adapter = UsersAdapter.getAdapter(context)
+        userRecyclerView.adapter = adapter
 
     }
 
     override fun onStart() {
 
         super.onStart()
-        firebaseRecyclerAdapter.startListening()
+        adapter?.startListening()
     }
 
     override fun onStop() {
         super.onStop()
-        firebaseRecyclerAdapter.stopListening()
+        adapter?.stopListening()
     }
 
 }

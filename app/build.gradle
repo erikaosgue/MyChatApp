@@ -23,6 +23,9 @@ android {
       minifyEnabled false
       proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
     }
+    debug {
+      clean
+    }
   }
   compileOptions {
     sourceCompatibility JavaVersion.VERSION_1_8
@@ -32,9 +35,12 @@ android {
     jvmTarget = '1.8'
   }
 	//Adding the mainBinding
- 	buildFeatures {
- 		viewBinding = true
- 	}
+  buildFeatures {
+ 	viewBinding = true
+
+  }
+
+
 }
 
 dependencies {
@@ -52,6 +58,7 @@ dependencies {
   implementation platform('com.google.firebase:firebase-bom:26.8.0')
   implementation 'com.google.firebase:firebase-analytics-ktx'
   implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+  implementation 'androidx.wear:wear:1.1.0'
 
   testImplementation 'junit:junit:4.+'
   androidTestImplementation 'androidx.test.ext:junit:1.1.2'
@@ -80,4 +87,5 @@ dependencies {
   implementation 'com.firebaseui:firebase-ui-database:7.1.1'
   implementation 'com.firebaseui:firebase-ui-auth:7.1.1'
   implementation 'com.firebaseui:firebase-ui-storage:7.1.1'
+  compileOnly 'com.google.android.wearable:wearable:2.8.1'
 }
