@@ -22,15 +22,12 @@ import com.google.firebase.database.FirebaseDatabase
  */
 class UsersFragment : Fragment() {
 
-    var mUserDatabase: DatabaseReference ?= null
-
+//    var mUserDatabase = FirebaseDatabase.getInstance().reference.child("Users")
     var adapter: UsersAdapter?= null
 
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+        inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View? {
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_users, container, false)
@@ -41,15 +38,13 @@ class UsersFragment : Fragment() {
 
 
         val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        mUserDatabase = FirebaseDatabase.getInstance().reference.child("Users")
-
-        Toast.makeText(context,"databaseQuery $mUserDatabase", Toast.LENGTH_LONG).show()
-        Log.d("User fragment DBQuery: ", mUserDatabase.toString())
+//        mUserDatabase =
 
         val userRecyclerView = view.findViewById<RecyclerView>(R.id.usersRecyclerViewId)
         userRecyclerView.setHasFixedSize(true)
-
         userRecyclerView.layoutManager = linearLayoutManager
+
+
 //        userRecyclerView.adapter = firebaseRecyclerAdapter
         adapter = UsersAdapter.getAdapter(context)
         userRecyclerView.adapter = adapter

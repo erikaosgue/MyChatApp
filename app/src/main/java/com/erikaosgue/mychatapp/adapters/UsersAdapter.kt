@@ -49,9 +49,8 @@ class UsersAdapter(var context: Context?): FirebaseRecyclerAdapter<Users, UsersA
 
         override fun onBindViewHolder(holder: UsersViewHolder, position: Int, users: Users) {
 //            Toast.makeText(context, "databaseQuery", Toast.LENGTH_LONG).show()
-            val userId = getRef(position).key
-            Log.d("DatabaseQuery: ", "Database")
-            holder.bindView(users, userId!!)
+            val otherUserId = getRef(position).key
+            holder.bindView(users, otherUserId!!)
 
 
         }
@@ -64,7 +63,7 @@ class UsersAdapter(var context: Context?): FirebaseRecyclerAdapter<Users, UsersA
 
 
 
-            fun bindView(user: Users, userId: String) {
+            fun bindView(user: Users, otherUserId: String) {
                 val userName = itemView.findViewById<TextView>(R.id.userName)
                 val userStatus = itemView.findViewById<TextView>(R.id.userStatus)
                 val userProfilePic = itemView.findViewById<CircleImageView>(R.id.usersProfile)
@@ -85,17 +84,18 @@ class UsersAdapter(var context: Context?): FirebaseRecyclerAdapter<Users, UsersA
                     .into(userProfilePic)
 
 
-                showDialogSelectOptions(itemView, userId, userNameTxt, userStatusTxt, userProfilePicLink)
+                showDialogSelectOptions(itemView, otherUserId, userNameTxt, userStatusTxt, userProfilePicLink)
 
 
             }
     }
-    fun showDialogSelectOptions(itemView: View, userId: String,
+    fun showDialogSelectOptions(itemView: View, otherUserId: String,
         userNameTxt: String?, userStatusTxt:String?, userProfilePicLink: String?) {
 
 
+        // Click in one oof the users Profile
         itemView.setOnClickListener {
-            Log.d("Users: ", userId)
+
             val options = arrayOf("Open Profile", "Send Message")
             val builder = AlertDialog.Builder(context)
             builder.setTitle("Select Options")
@@ -108,13 +108,13 @@ class UsersAdapter(var context: Context?): FirebaseRecyclerAdapter<Users, UsersA
                 if (i == 0) {
                     //open user profile
                     val profileIntent = Intent(context, ProfileActivity::class.java)
-                    profileIntent.putExtra("userId", userId)
+                    profileIntent.putExtra("otherUserId", otherUserId)
                     context?.startActivity(profileIntent)
 
                 } else {
                     //Send Message
                     val chatIntent = Intent(context, ChatActivity::class.java).apply {
-                        putExtra("userId", userId)
+                        putExtra("otherUserId", otherUserId)
                         putExtra("name", userNameTxt)
                         putExtra("status", userStatusTxt)
                         putExtra("profile", userProfilePicLink)

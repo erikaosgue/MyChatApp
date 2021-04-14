@@ -26,7 +26,7 @@ class ProfileActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         if (intent.extras != null) {
-            userId = intent.extras!!["userId"].toString()
+            userId = intent.extras!!["otherUserId"].toString()
 
             mCurrentUser = FirebaseAuth.getInstance().currentUser
             mUsersDatabase = FirebaseDatabase.getInstance().reference.child("Users").child(userId!!)

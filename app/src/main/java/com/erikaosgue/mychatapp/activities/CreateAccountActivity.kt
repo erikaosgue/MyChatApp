@@ -47,12 +47,11 @@ class CreateAccountActivity : AppCompatActivity() {
             mAuth?.createUserWithEmailAndPassword(email, password)
                 ?.addOnCompleteListener {
                     task: Task<AuthResult> ->
-                    println("Task:  $task")
                     if (task.isSuccessful) {
                         var currUserId = mAuth?.currentUser
                         var userId = currUserId?.uid
 
-                        // Given the Table name Users in the database
+                        // Create Table name Users in the database
                         mDatabase = FirebaseDatabase.getInstance()
                             .reference
                             .child("Users")

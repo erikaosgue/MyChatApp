@@ -26,22 +26,18 @@ class DashboardActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         actDashboardBinding = ActivityDashboardBinding.inflate(layoutInflater)
         setContentView(actDashboardBinding.root)
+
         // Adds the title bar
         supportActionBar?.title = "Dashboard"
 
+        //Set the Adapter which is the bar that shows users and chats
         sectionAdapter = SectionPagerAdapter(supportFragmentManager)
         actDashboardBinding.dashViewPaperId.adapter = sectionAdapter
         actDashboardBinding.mainTabs.setupWithViewPager(actDashboardBinding.dashViewPaperId)
         actDashboardBinding.mainTabs.setTabTextColors(Color.GRAY, Color.WHITE)
 
 
-//        val extras = intent.extras
-//        if (extras != null) {
-//            val userName = extras.get("name")
-//            Toast.makeText(this, "Username: $userName", Toast.LENGTH_LONG).show()
-//        }
     }
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         super.onCreateOptionsMenu(menu)
         menuInflater.inflate(R.menu.main_menu, menu)

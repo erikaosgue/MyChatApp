@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "469237537938",
+    "firebase_url": "https://mychatapp-d2b1c-default-rtdb.firebaseio.com",
+    "project_id": "mychatapp-d2b1c",
+    "storage_bucket": "mychatapp-d2b1c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:469237537938:android:875a53f0e22eacf7a31a4b",
+        "android_client_info": {
+          "package_name": "com.erikaosgue.mychatapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "469237537938-kbdaqboshpfr9kaithe95gbqehuk7tdn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.erikaosgue.mychatapp",
+            "certificate_hash": "bc446e7d47643604fe489c6239a70576f15bc687"
+          }
+        },
+        {
+          "client_id": "469237537938-aafdf0a6njl7knno3b0flfdcbgskr31n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKdXCugLgcBMXD6QoVnXcew5KfZDfsP_s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "469237537938-aafdf0a6njl7knno3b0flfdcbgskr31n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
