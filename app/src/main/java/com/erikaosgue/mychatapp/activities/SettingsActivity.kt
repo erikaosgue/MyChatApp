@@ -41,6 +41,8 @@ class SettingsActivity : AppCompatActivity() {
         actSettingsBinding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(actSettingsBinding.root)
 
+        supportActionBar?.title = "Settings"
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         mContext = this
 
@@ -137,9 +139,7 @@ class SettingsActivity : AppCompatActivity() {
             val error = CropImage.getActivityResult(data).error
             Log.d("Error", error.toString())
         }
-        else {
-            Toast.makeText(this, "FAIL from cropImage!", Toast.LENGTH_LONG).show()
-        }
+
     }
 
 

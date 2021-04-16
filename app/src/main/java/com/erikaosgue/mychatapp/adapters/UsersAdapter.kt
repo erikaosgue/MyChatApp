@@ -17,6 +17,8 @@ import com.erikaosgue.mychatapp.activities.ProfileActivity
 import com.erikaosgue.mychatapp.models.Users
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.Query
 import com.squareup.picasso.Picasso
@@ -50,16 +52,23 @@ class UsersAdapter(var context: Context?): FirebaseRecyclerAdapter<Users, UsersA
         override fun onBindViewHolder(holder: UsersViewHolder, position: Int, users: Users) {
 //            Toast.makeText(context, "databaseQuery", Toast.LENGTH_LONG).show()
             val otherUserId = getRef(position).key
-            holder.bindView(users, otherUserId!!)
+//            val userId = FirebaseAuth.getInstance().currentUser.uid
+//            if (otherUserId != userId) {
+                holder.bindView(users, otherUserId!!)
+//            }
 
 
-        }
 
-        inner class UsersViewHolder(var itemView: View): RecyclerView.ViewHolder(itemView) {
 
+    }
+
+
+        inner class UsersViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+
+            // Variables for the Dialog Box when clicking in the list of the users
             var userNameTxt: String? = null
             var userStatusTxt: String? = null
-            var userProfilePicLink: String? = null
+            private var userProfilePicLink: String? = null
 
 
 
@@ -73,20 +82,31 @@ class UsersAdapter(var context: Context?): FirebaseRecyclerAdapter<Users, UsersA
                 userStatusTxt = user.status
                 userProfilePicLink = user.thumb_image
 
-                userName.text = user.display_name
-                userStatus.text = user.status
+                // Display the user information in the List of users
+                val userId: String = FirebaseAuth.getInstance().currentUser.uid
 
-                Log.d("UsersAdapter: ", "UsersAdapter")
-                Toast.makeText(context,  "UsersAdapter UsersAdapter", Toast.LENGTH_LONG).show()
-                Picasso.get()
-                    .load(userProfilePicLink)
-                    .placeholder(R.drawable.profile_img)
-                    .into(userProfilePic)
+//                if (otherUserId != userId ) {
+//            }
 
 
-                showDialogSelectOptions(itemView, otherUserId, userNameTxt, userStatusTxt, userProfilePicLink)
+                    userName.text = user.display_name
+                    userStatus.text = user.status
+
+                    Picasso.get()
+                        .load(userProfilePicLink)
+                        .placeholder(R.drawable.profile_img)
+                        .into(userProfilePic)
 
 
+                    showDialogSelectOptions(
+                        itemView,
+                        otherUserId,
+                        userNameTxt,
+                        userStatusTxt,
+                        userProfilePicLink
+                    )
+
+//                }
             }
     }
     fun showDialogSelectOptions(itemView: View, otherUserId: String,

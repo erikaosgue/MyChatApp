@@ -1,0 +1,38 @@
+<Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/teal_200"
+        app:theme="@style/ThemeOverlay.AppCompat"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:contentInsetStartWithNavigation="0dp"
+        android:contentInsetStart="0dp"
+        app:contentInsetLeft="0dp"
+        app:contentInsetStart="0dp"
+        android:contentInsetRight="0dp"
+        android:contentInsetEnd="0dp"
+        app:contentInsetRight="0dp"
+        app:contentInsetEnd="0dp"
+        >
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/customBarCircleImage"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        />
+    <TextView
+        android:id="@+id/customBarName"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:paddingStart="10dp"
+        android:textColor="@color/grey_100"
+        android:text="Display Name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/customBarCircleImage"
+        />
+
+</Toolbar>

@@ -57,6 +57,7 @@
     android:layout_marginTop="50dp"
     android:text="change Picture"
     android:paddingHorizontal="20dp"
+      android:textColor="@color/white"
 
     android:stateListAnimator="@drawable/state_list_animator_z"
     android:background="@drawable/bt_shape"
@@ -73,6 +74,7 @@
     android:layout_marginTop="30dp"
     android:text="change Status"
     android:paddingHorizontal="20dp"
+      android:textColor="@color/white"
 
 
     android:stateListAnimator="@drawable/state_list_animator_z"

@@ -23,7 +23,6 @@ import com.squareup.picasso.Picasso
 
 var mFirebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
 var mFirebaseDatabaseRef = FirebaseDatabase.getInstance().reference
-//var mFirebaseAdapter: FirebaseRecyclerAdapter<FriendlyMessage, MessageViewHolder>? = null
 
 val messageQuery = FirebaseDatabase.getInstance()
     .reference
@@ -35,9 +34,6 @@ val messageOptions: FirebaseRecyclerOptions<FriendlyMessage> = FirebaseRecyclerO
 
 
 
-// FirebaseRecyclerAdapter<model(class), ViewHolder>
-//var messengerAdapterFirebase : FirebaseRecyclerAdapter<FriendlyMessage, MessageViewHolder>? = object: FirebaseRecyclerAdapter<FriendlyMessage, MessageViewHolder>(messageOptions){
-//object MessengerAdapterFirebase : FirebaseRecyclerAdapter<FriendlyMessage, MessageViewHolder>(messageOptions){
 class MessengerAdapterFirebase(var otherUserId: String?) : FirebaseRecyclerAdapter<FriendlyMessage, MessengerAdapterFirebase.MessageViewHolder>(messageOptions) {
 
     companion object {
@@ -47,7 +43,6 @@ class MessengerAdapterFirebase(var otherUserId: String?) : FirebaseRecyclerAdapt
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {
-        Log.d("Chat1: ", "Chats messages")
         val view: View = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_message, parent, false)
         return MessageViewHolder(view, otherUserId)
@@ -59,7 +54,6 @@ class MessengerAdapterFirebase(var otherUserId: String?) : FirebaseRecyclerAdapt
         position: Int,
         friendlyMessage: FriendlyMessage
     ) {
-        Log.d("Chat 11 : ", "Chats messages on Bind ${friendlyMessage::class.java}, ${friendlyMessage.text}")
         if (friendlyMessage.text != null) {
             holder.bindView(friendlyMessage)
         }
@@ -71,15 +65,11 @@ class MessengerAdapterFirebase(var otherUserId: String?) : FirebaseRecyclerAdapt
 
 
         fun bindView(friendlyMessage: FriendlyMessage) {
-            Log.d("Chat 2: ", "Chats messages")
             val messageTextView = itemView.findViewById<TextView>(R.id.messageTextview)
             val messengerTextView = itemView.findViewById<TextView>(R.id.messengerTextview)
             val profileImageView = itemView.findViewById<ImageView>(R.id.messengerImageView)
             val profileImageViewRight =
                 itemView.findViewById<ImageView>(R.id.messengerImageViewRight)
-
-            messengerTextView.text = friendlyMessage.name
-            messageTextView.text = friendlyMessage.text
 
             val currentUserId = mFirebaseUser?.uid
 
@@ -94,9 +84,9 @@ class MessengerAdapterFirebase(var otherUserId: String?) : FirebaseRecyclerAdapt
                 getImage(
                     currentUserId,
                     profileImageViewRight,
-                    profileImageView,
                     messageTextView,
-                    messengerTextView
+                    messengerTextView,
+                    friendlyMessage.text
                 )
 
             } else {
@@ -107,23 +97,19 @@ class MessengerAdapterFirebase(var otherUserId: String?) : FirebaseRecyclerAdapt
                 messengerTextView.gravity = (Gravity.CENTER_VERTICAL or Gravity.START)
                 getImage(
                     otherUserId,
-                    profileImageViewRight,
                     profileImageView,
                     messageTextView,
-                    messengerTextView
+                    messengerTextView,
+                    friendlyMessage.text
                 )
-
             }
-
-
         }
-
         private fun getImage(
             userId: String?,
-            profileImageViewRight: ImageView,
-            profileImageView: ImageView,
+            profileImage: ImageView,
             messageTextView: TextView,
-            messengerTextView: TextView
+            messengerTextView: TextView,
+            message: String?
         ) {
 
 
@@ -133,21 +119,21 @@ class MessengerAdapterFirebase(var otherUserId: String?) : FirebaseRecyclerAdapt
                 .child(userId!!)
                 .addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
-                        Log.d("Chat3: ", "Chats messages")
 
-//                        val imageUrl = snapshot.child("thumb_image").value.toString()
-//                        val displayName = snapshot.child("display_name").value.toString()
+                        val imageUrl = snapshot.child("thumb_image").value.toString()
+                        val displayName = snapshot.child("display_name").value.toString()
 
-//                        messageTextView.text = displayName
-//
-//                        Picasso.get()
-//                            .load(imageUrl)
-//                            .placeholder(R.drawable.profile_img)
-//                            .into(profileImageViewRight)
+                        messageTextView.text = message
+                        messengerTextView.text = "$displayName wrote..."
+
+                        Picasso.get()
+                            .load(imageUrl)
+                            .placeholder(R.drawable.profile_img)
+                            .into(profileImage)
                     }
 
                     override fun onCancelled(error: DatabaseError) {
-                        Log.d("Chat 2: ", error.details)
+                        Log.d("Error: ", error.details)
                         TODO("Not yet implemented")
                     }
 
