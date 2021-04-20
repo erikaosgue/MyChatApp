@@ -24,8 +24,6 @@ class MainActivity : AppCompatActivity() {
 
 		//Checks if the user is login or logOut
 		checkUserLogIn()
-
-
 		setUpUICreateAccount()
 		setUpUISingIn()
 
@@ -46,8 +44,7 @@ class MainActivity : AppCompatActivity() {
 	}
 
 	private fun checkUserLogIn() {
-		mAuthListener = FirebaseAuth.AuthStateListener {
-				firebaseAuth: FirebaseAuth ->
+		mAuthListener = FirebaseAuth.AuthStateListener { firebaseAuth: FirebaseAuth ->
 
 			user = firebaseAuth.currentUser
 			if (user != null) {

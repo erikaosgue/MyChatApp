@@ -30,10 +30,15 @@ class DashboardActivity : AppCompatActivity() {
         // Adds the title bar
         supportActionBar?.title = "Dashboard"
 
-        //Set the Adapter which is the bar that shows users and chats
+        //Set the ViewPager with the Adapter which is the one that
+        //Shows the fragments with the data
         sectionAdapter = SectionPagerAdapter(supportFragmentManager)
-        actDashboardBinding.dashViewPaperId.adapter = sectionAdapter
-        actDashboardBinding.mainTabs.setupWithViewPager(actDashboardBinding.dashViewPaperId)
+        actDashboardBinding.dashViewPagerId.adapter = sectionAdapter
+
+        // Set up the TabLayout which is the bar for the title of each
+        // Fragment, Example
+        // users chats
+        actDashboardBinding.mainTabs.setupWithViewPager(actDashboardBinding.dashViewPagerId)
         actDashboardBinding.mainTabs.setTabTextColors(Color.GRAY, Color.WHITE)
 
 
