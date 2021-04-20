@@ -184,6 +184,7 @@ class SettingsActivity : AppCompatActivity() {
         val imageFilePath = mStorageRef.child("profile_images").child("$userId.jpg")
 
 
+        // Add an Image in the Store of Firebase
         imageFilePath.putFile(imageUri).addOnSuccessListener { task ->
             // Pass the url where the image was store
             imageFilePath.downloadUrl.addOnSuccessListener { task ->
