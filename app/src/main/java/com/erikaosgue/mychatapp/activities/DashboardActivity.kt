@@ -27,12 +27,15 @@ class DashboardActivity : AppCompatActivity() {
         actDashboardBinding = ActivityDashboardBinding.inflate(layoutInflater)
         setContentView(actDashboardBinding.root)
 
-        // Adds the title bar
+        // Add the title bar
         supportActionBar?.title = "Dashboard"
+
+        // SectionPagerAdapter class choose the Fragment to display
+        // base on the position
+        sectionAdapter = SectionPagerAdapter(supportFragmentManager)
 
         //Set the ViewPager with the Adapter which is the one that
         //Shows the fragments with the data
-        sectionAdapter = SectionPagerAdapter(supportFragmentManager)
         actDashboardBinding.dashViewPagerId.adapter = sectionAdapter
 
         // Set up the TabLayout which is the bar for the title of each
