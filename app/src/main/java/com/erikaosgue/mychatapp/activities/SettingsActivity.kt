@@ -192,7 +192,6 @@ class SettingsActivity : AppCompatActivity() {
                 val imageUrl = task.toString()
 
                 updateObj["image"] = imageUrl
-                Log.d("image url =>", "$imageUrl")
 
                 storeRefThumbnail(thumbFile, updateObj)
                 //https://firebasestorage.googleapis.com/v0/b/mychatapp-d2b1c.appspot.com/o
@@ -213,10 +212,8 @@ class SettingsActivity : AppCompatActivity() {
         val userId = mCurrentUser?.uid
         val thumbFilePath = mStorageRef.child("profile_images").child("thumbs").child("$userId.jpg")
         thumbFilePath.putFile(thumbFile).addOnSuccessListener {
-            Log.d("Here understanding =>", "3")
 
             thumbFilePath.downloadUrl.addOnSuccessListener { task ->
-                Log.d("Here understanding =>", "4")
 
                 val thumbUrl = task.toString()
 
@@ -233,12 +230,10 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
     private fun updateDatabase(updateObj: HashMap<String, Any>) {
-        Log.d("Here understanding =>", "5")
 
         //Add the url (from Storage) into the realtimeDatabase
         // Base on the current user
         mDatabase.updateChildren(updateObj).addOnSuccessListener {
-            Log.d("Here understanding =>", "6")
             showMessage("Profile Image Saved!")
 
         }.addOnFailureListener {
@@ -252,9 +247,6 @@ class SettingsActivity : AppCompatActivity() {
             this, message,
             Toast.LENGTH_LONG)
             .show()
-
-        Log.d("Here =>", message)
-
     }
 
 }

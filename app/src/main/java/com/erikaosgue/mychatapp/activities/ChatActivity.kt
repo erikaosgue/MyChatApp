@@ -59,7 +59,7 @@ class ChatActivity : AppCompatActivity() {
 
         val inflater = this.getSystemService(android.content.Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
-        // This is a custom bar Name to show name and Image of the person the user is talking to
+        // Inflating a custom bar Name to show name and Image of the person the user is talking to
         val actionBarView = inflater.inflate(R.layout.custom_bar_image, null)
         val customBarName = actionBarView.findViewById<TextView>(R.id.customBarName)
         val customBarImage = actionBarView.findViewById<ImageView>(R.id.customBarCircleImage)
@@ -70,8 +70,11 @@ class ChatActivity : AppCompatActivity() {
             .placeholder(R.drawable.profile_img)
             .into(customBarImage)
 
+
+        // Add a custom bar Name to show name and Image of the person the user is talking to
         supportActionBar?.customView = actionBarView
 
+        // Create A unique instance of MessengerAdapterFirebase
         mFirebaseAdapter = MessengerAdapterFirebase.getMessengerAdapter(otherUserId)
 
 
@@ -79,8 +82,8 @@ class ChatActivity : AppCompatActivity() {
             layoutManager = mLinearLayoutManager
             adapter = mFirebaseAdapter
         }
-        var sizeList = actChatBinding.messageRecyclerView.adapter?.itemCount
-        Log.d("SIzeList:", sizeList.toString())
+
+        val sizeList = actChatBinding.messageRecyclerView.adapter.itemCount
         actChatBinding.messageRecyclerView.smoothScrollToPosition(sizeList!!)
 
         actChatBinding.sendButton.setOnClickListener {
@@ -110,6 +113,8 @@ class ChatActivity : AppCompatActivity() {
                         }
                     }
 
+                // Set the bar to write a message to empty every time the users
+                // send a message
                 actChatBinding.messageEdt.setText("")
             }
         }

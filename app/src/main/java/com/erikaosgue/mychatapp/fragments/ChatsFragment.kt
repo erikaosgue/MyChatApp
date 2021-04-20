@@ -13,6 +13,7 @@ import com.erikaosgue.mychatapp.R
  * create an instance of this fragment.
  */
 class ChatsFragment : Fragment() {
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

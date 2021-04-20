@@ -56,10 +56,6 @@ class UsersAdapter(var context: Context?): FirebaseRecyclerAdapter<Users, UsersA
 //            if (otherUserId != userId) {
                 holder.bindView(users, otherUserId!!)
 //            }
-
-
-
-
     }
 
 
@@ -69,7 +65,6 @@ class UsersAdapter(var context: Context?): FirebaseRecyclerAdapter<Users, UsersA
             var userNameTxt: String? = null
             var userStatusTxt: String? = null
             private var userProfilePicLink: String? = null
-
 
 
             fun bindView(user: Users, otherUserId: String) {
